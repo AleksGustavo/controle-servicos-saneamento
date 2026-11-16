@@ -1,0 +1,1262 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "c05979271d415cd7e396abe847c0b34e",
+    "entities": [
+      {
+        "tableName": "municipio",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nome` TEXT NOT NULL, `nomeNormalizado` TEXT NOT NULL, `uf` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeNormalizado",
+            "columnName": "nomeNormalizado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uf",
+            "columnName": "uf",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_municipio_nomeNormalizado_uf",
+            "unique": true,
+            "columnNames": [
+              "nomeNormalizado",
+              "uf"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_municipio_nomeNormalizado_uf` ON `${TABLE_NAME}` (`nomeNormalizado`, `uf`)"
+          }
+        ]
+      },
+      {
+        "tableName": "bairro",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `municipioId` TEXT NOT NULL, `nomeOriginal` TEXT NOT NULL, `nomeNormalizado` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `origem` TEXT NOT NULL DEFAULT 'LOCAL_SERVICO', `ativo` INTEGER NOT NULL DEFAULT 1, `verificadoEm` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`municipioId`) REFERENCES `municipio`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "municipioId",
+            "columnName": "municipioId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeOriginal",
+            "columnName": "nomeOriginal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeNormalizado",
+            "columnName": "nomeNormalizado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origem",
+            "columnName": "origem",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'LOCAL_SERVICO'"
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "1"
+          },
+          {
+            "fieldPath": "verificadoEm",
+            "columnName": "verificadoEm",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_bairro_municipioId_nomeNormalizado",
+            "unique": true,
+            "columnNames": [
+              "municipioId",
+              "nomeNormalizado"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_bairro_municipioId_nomeNormalizado` ON `${TABLE_NAME}` (`municipioId`, `nomeNormalizado`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "municipio",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "municipioId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "tipo_servico",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nome` TEXT NOT NULL, `ativo` INTEGER NOT NULL, `ordemExibicao` INTEGER NOT NULL, `aplicaRedeEncontrada` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ordemExibicao",
+            "columnName": "ordemExibicao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aplicaRedeEncontrada",
+            "columnName": "aplicaRedeEncontrada",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "material_rede",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nome` TEXT NOT NULL, `ativo` INTEGER NOT NULL, `ordemExibicao` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ordemExibicao",
+            "columnName": "ordemExibicao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "condicao_observada",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `codigo` TEXT NOT NULL, `nome` TEXT NOT NULL, `ativo` INTEGER NOT NULL, `ordemExibicao` INTEGER NOT NULL, `exclusiva` INTEGER NOT NULL, `exigeDescricao` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codigo",
+            "columnName": "codigo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ordemExibicao",
+            "columnName": "ordemExibicao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exclusiva",
+            "columnName": "exclusiva",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exigeDescricao",
+            "columnName": "exigeDescricao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_condicao_observada_codigo",
+            "unique": true,
+            "columnNames": [
+              "codigo"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_condicao_observada_codigo` ON `${TABLE_NAME}` (`codigo`)"
+          }
+        ]
+      },
+      {
+        "tableName": "servico",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `tipoServicoId` TEXT NOT NULL, `municipioId` TEXT NOT NULL, `bairroId` TEXT NOT NULL, `logradouro` TEXT NOT NULL, `numero` TEXT NOT NULL, `complemento` TEXT, `equipeIdentificador` TEXT, `status` TEXT NOT NULL, `inicioUtcEpochMs` INTEGER NOT NULL, `inicioElapsedRealtimeMs` INTEGER, `inicioBootCount` INTEGER, `inicioZoneId` TEXT, `redeEncontradaUtcEpochMs` INTEGER, `fimUtcEpochMs` INTEGER, `duracaoTotalMs` INTEGER, `duracaoAteRedeMs` INTEGER, `situacaoRede` TEXT, `diametroMm` INTEGER, `materialRedeId` TEXT, `profundidadeMetros` REAL, `quantidadeLigacoes` INTEGER, `observacoes` TEXT, `requerRevisao` INTEGER NOT NULL, `motivoRevisao` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `deletedAt` INTEGER, `version` INTEGER NOT NULL, `ramalAguaTrocado` INTEGER NOT NULL DEFAULT 0, `ladoRamalTrocado` TEXT, `comprimentoRamalCm` INTEGER, `baseTempo` TEXT, `logradouroId` TEXT, `cep` TEXT, `origemEndereco` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`tipoServicoId`) REFERENCES `tipo_servico`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`municipioId`) REFERENCES `municipio`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`bairroId`) REFERENCES `bairro`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`materialRedeId`) REFERENCES `material_rede`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoServicoId",
+            "columnName": "tipoServicoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "municipioId",
+            "columnName": "municipioId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bairroId",
+            "columnName": "bairroId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "logradouro",
+            "columnName": "logradouro",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numero",
+            "columnName": "numero",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "complemento",
+            "columnName": "complemento",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "equipeIdentificador",
+            "columnName": "equipeIdentificador",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inicioUtcEpochMs",
+            "columnName": "inicioUtcEpochMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inicioElapsedRealtimeMs",
+            "columnName": "inicioElapsedRealtimeMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "inicioBootCount",
+            "columnName": "inicioBootCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "inicioZoneId",
+            "columnName": "inicioZoneId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "redeEncontradaUtcEpochMs",
+            "columnName": "redeEncontradaUtcEpochMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "fimUtcEpochMs",
+            "columnName": "fimUtcEpochMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "duracaoTotalMs",
+            "columnName": "duracaoTotalMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "duracaoAteRedeMs",
+            "columnName": "duracaoAteRedeMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "situacaoRede",
+            "columnName": "situacaoRede",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "diametroMm",
+            "columnName": "diametroMm",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "materialRedeId",
+            "columnName": "materialRedeId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "profundidadeMetros",
+            "columnName": "profundidadeMetros",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "quantidadeLigacoes",
+            "columnName": "quantidadeLigacoes",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "observacoes",
+            "columnName": "observacoes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "requerRevisao",
+            "columnName": "requerRevisao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "motivoRevisao",
+            "columnName": "motivoRevisao",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deletedAt",
+            "columnName": "deletedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ramalAguaTrocado",
+            "columnName": "ramalAguaTrocado",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "ladoRamalTrocado",
+            "columnName": "ladoRamalTrocado",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "comprimentoRamalCm",
+            "columnName": "comprimentoRamalCm",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "baseTempo",
+            "columnName": "baseTempo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "logradouroId",
+            "columnName": "logradouroId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "cep",
+            "columnName": "cep",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "origemEndereco",
+            "columnName": "origemEndereco",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_servico_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_servico_tipoServicoId",
+            "unique": false,
+            "columnNames": [
+              "tipoServicoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_tipoServicoId` ON `${TABLE_NAME}` (`tipoServicoId`)"
+          },
+          {
+            "name": "index_servico_municipioId",
+            "unique": false,
+            "columnNames": [
+              "municipioId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_municipioId` ON `${TABLE_NAME}` (`municipioId`)"
+          },
+          {
+            "name": "index_servico_bairroId",
+            "unique": false,
+            "columnNames": [
+              "bairroId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_bairroId` ON `${TABLE_NAME}` (`bairroId`)"
+          },
+          {
+            "name": "index_servico_materialRedeId",
+            "unique": false,
+            "columnNames": [
+              "materialRedeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_materialRedeId` ON `${TABLE_NAME}` (`materialRedeId`)"
+          },
+          {
+            "name": "index_servico_inicioUtcEpochMs",
+            "unique": false,
+            "columnNames": [
+              "inicioUtcEpochMs"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_inicioUtcEpochMs` ON `${TABLE_NAME}` (`inicioUtcEpochMs`)"
+          },
+          {
+            "name": "index_servico_logradouroId",
+            "unique": false,
+            "columnNames": [
+              "logradouroId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_logradouroId` ON `${TABLE_NAME}` (`logradouroId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "tipo_servico",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "tipoServicoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "municipio",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "municipioId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "bairro",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "bairroId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "material_rede",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "materialRedeId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "servico_condicao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`servicoId` TEXT NOT NULL, `condicaoId` TEXT NOT NULL, `descricao` TEXT, PRIMARY KEY(`servicoId`, `condicaoId`), FOREIGN KEY(`servicoId`) REFERENCES `servico`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`condicaoId`) REFERENCES `condicao_observada`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "servicoId",
+            "columnName": "servicoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "condicaoId",
+            "columnName": "condicaoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descricao",
+            "columnName": "descricao",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "servicoId",
+            "condicaoId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_servico_condicao_condicaoId",
+            "unique": false,
+            "columnNames": [
+              "condicaoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_servico_condicao_condicaoId` ON `${TABLE_NAME}` (`condicaoId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "servico",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "servicoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "condicao_observada",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "condicaoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "evento_servico",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `servicoId` TEXT NOT NULL, `tipoEvento` TEXT NOT NULL, `timestampUtcEpochMs` INTEGER NOT NULL, `wallClockBrutoMs` INTEGER, `timestampMonotonicMs` INTEGER, `bootCount` INTEGER, `dadosAnteriores` TEXT, `dadosNovos` TEXT, `motivo` TEXT, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`servicoId`) REFERENCES `servico`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "servicoId",
+            "columnName": "servicoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoEvento",
+            "columnName": "tipoEvento",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampUtcEpochMs",
+            "columnName": "timestampUtcEpochMs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wallClockBrutoMs",
+            "columnName": "wallClockBrutoMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "timestampMonotonicMs",
+            "columnName": "timestampMonotonicMs",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "bootCount",
+            "columnName": "bootCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dadosAnteriores",
+            "columnName": "dadosAnteriores",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "dadosNovos",
+            "columnName": "dadosNovos",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "motivo",
+            "columnName": "motivo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_evento_servico_servicoId",
+            "unique": false,
+            "columnNames": [
+              "servicoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_evento_servico_servicoId` ON `${TABLE_NAME}` (`servicoId`)"
+          },
+          {
+            "name": "index_evento_servico_servicoId_tipoEvento",
+            "unique": false,
+            "columnNames": [
+              "servicoId",
+              "tipoEvento"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_evento_servico_servicoId_tipoEvento` ON `${TABLE_NAME}` (`servicoId`, `tipoEvento`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "servico",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "servicoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "funcionario",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nomeExibicao` TEXT NOT NULL, `nomeNormalizado` TEXT NOT NULL, `nomeCompleto` TEXT, `apelidoOuCodigo` TEXT, `funcaoHabitual` TEXT, `ativo` INTEGER NOT NULL, `criadoEm` INTEGER NOT NULL, `atualizadoEm` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeExibicao",
+            "columnName": "nomeExibicao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeNormalizado",
+            "columnName": "nomeNormalizado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeCompleto",
+            "columnName": "nomeCompleto",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "apelidoOuCodigo",
+            "columnName": "apelidoOuCodigo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "funcaoHabitual",
+            "columnName": "funcaoHabitual",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "criadoEm",
+            "columnName": "criadoEm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "atualizadoEm",
+            "columnName": "atualizadoEm",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_funcionario_nomeNormalizado",
+            "unique": false,
+            "columnNames": [
+              "nomeNormalizado"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_funcionario_nomeNormalizado` ON `${TABLE_NAME}` (`nomeNormalizado`)"
+          }
+        ]
+      },
+      {
+        "tableName": "participacao_servico",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`servicoId` TEXT NOT NULL, `funcionarioId` TEXT NOT NULL, `funcaoNoServico` TEXT NOT NULL, `funcaoDescricao` TEXT, `nota` TEXT, `nomeSnapshot` TEXT NOT NULL, `funcaoSnapshot` TEXT NOT NULL, `adicionadoEm` INTEGER NOT NULL, `atualizadoEm` INTEGER NOT NULL, PRIMARY KEY(`servicoId`, `funcionarioId`), FOREIGN KEY(`servicoId`) REFERENCES `servico`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`funcionarioId`) REFERENCES `funcionario`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "servicoId",
+            "columnName": "servicoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "funcionarioId",
+            "columnName": "funcionarioId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "funcaoNoServico",
+            "columnName": "funcaoNoServico",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "funcaoDescricao",
+            "columnName": "funcaoDescricao",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "nota",
+            "columnName": "nota",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "nomeSnapshot",
+            "columnName": "nomeSnapshot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "funcaoSnapshot",
+            "columnName": "funcaoSnapshot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "adicionadoEm",
+            "columnName": "adicionadoEm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "atualizadoEm",
+            "columnName": "atualizadoEm",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "servicoId",
+            "funcionarioId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_participacao_servico_funcionarioId",
+            "unique": false,
+            "columnNames": [
+              "funcionarioId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_participacao_servico_funcionarioId` ON `${TABLE_NAME}` (`funcionarioId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "servico",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "servicoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "funcionario",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "funcionarioId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "logradouro",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `tipo` TEXT, `nomeExibicao` TEXT NOT NULL, `nomeNormalizado` TEXT NOT NULL, `cep` TEXT, `origem` TEXT NOT NULL, `origemExternaId` TEXT, `verificadoEm` INTEGER, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `ativo` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "nomeExibicao",
+            "columnName": "nomeExibicao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeNormalizado",
+            "columnName": "nomeNormalizado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cep",
+            "columnName": "cep",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "origem",
+            "columnName": "origem",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origemExternaId",
+            "columnName": "origemExternaId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "verificadoEm",
+            "columnName": "verificadoEm",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ativo",
+            "columnName": "ativo",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_logradouro_nomeNormalizado",
+            "unique": false,
+            "columnNames": [
+              "nomeNormalizado"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_logradouro_nomeNormalizado` ON `${TABLE_NAME}` (`nomeNormalizado`)"
+          },
+          {
+            "name": "index_logradouro_cep",
+            "unique": false,
+            "columnNames": [
+              "cep"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_logradouro_cep` ON `${TABLE_NAME}` (`cep`)"
+          }
+        ]
+      },
+      {
+        "tableName": "logradouro_bairro",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`logradouroId` TEXT NOT NULL, `bairroId` TEXT NOT NULL, `origem` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`logradouroId`, `bairroId`), FOREIGN KEY(`logradouroId`) REFERENCES `logradouro`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`bairroId`) REFERENCES `bairro`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "logradouroId",
+            "columnName": "logradouroId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bairroId",
+            "columnName": "bairroId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origem",
+            "columnName": "origem",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "logradouroId",
+            "bairroId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_logradouro_bairro_bairroId",
+            "unique": false,
+            "columnNames": [
+              "bairroId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_logradouro_bairro_bairroId` ON `${TABLE_NAME}` (`bairroId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "logradouro",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "logradouroId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "bairro",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "bairroId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ligacao_trocada",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `servicoId` TEXT NOT NULL, `ordem` INTEGER NOT NULL, `numeroTexto` TEXT, `bairroTexto` TEXT, `logradouroTexto` TEXT, `complemento` TEXT, `identificadorLigacao` TEXT, `lado` TEXT NOT NULL, `comprimentoCm` INTEGER NOT NULL, `observacoes` TEXT, `pendenteIdentificacao` INTEGER NOT NULL, `legado` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`servicoId`) REFERENCES `servico`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "servicoId",
+            "columnName": "servicoId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ordem",
+            "columnName": "ordem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numeroTexto",
+            "columnName": "numeroTexto",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "bairroTexto",
+            "columnName": "bairroTexto",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "logradouroTexto",
+            "columnName": "logradouroTexto",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "complemento",
+            "columnName": "complemento",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "identificadorLigacao",
+            "columnName": "identificadorLigacao",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lado",
+            "columnName": "lado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comprimentoCm",
+            "columnName": "comprimentoCm",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observacoes",
+            "columnName": "observacoes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pendenteIdentificacao",
+            "columnName": "pendenteIdentificacao",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "legado",
+            "columnName": "legado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_ligacao_trocada_servicoId",
+            "unique": false,
+            "columnNames": [
+              "servicoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ligacao_trocada_servicoId` ON `${TABLE_NAME}` (`servicoId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "servico",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "servicoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c05979271d415cd7e396abe847c0b34e')"
+    ]
+  }
+}
